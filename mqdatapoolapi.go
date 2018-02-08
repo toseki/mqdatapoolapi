@@ -41,7 +41,7 @@ func run(c *cli.Context) error {
 	if subtopic == "" || c.String("kvs-path") == "" || c.String("mysql-dsn") == "" || c.String("user-table") == "" {
 		log.Errorf("missing some parameter")
 		fmt.Println("ex) ")
-		fmt.Printf("%s --mqtt-server tcp://<mqttserver>:1883 --mqtt-username <username> --mqtt-password <password> --mqtt-subtopic <topic> --kvs-path <path> --api-port 8080 --mysql-dsn \"user:password@tcp(host:port)/dbname\" --user-table usertable\n", os.Args[0])
+		fmt.Printf("%s --mqtt-server tcp://<mqttserver>:1883 --mqtt-username <username> --mqtt-password <password> --mqtt-subtopic <topic> --kvs-path <path> --api-port 8080 --mysql-dsn \"user:password@tcp(host:port)/dbname\" --user-table <usertable name>\n", os.Args[0])
 		os.Exit(0)
 	}
 
@@ -111,8 +111,8 @@ func run(c *cli.Context) error {
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "mqtt-to-slack"
-	app.Usage = "MQTT to SlackWebhook"
+	app.Name = "mqdatapoolapi"
+	app.Usage = "MQTT to LevelDB. Data Access RestAPI"
 	app.Version = version
 	app.Action = run
 	app.Flags = []cli.Flag{
