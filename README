@@ -1,0 +1,30 @@
+MQTT to SlackWebhook.
+
+Subscribe MQTT topic payload transfer to SlackWebhook.
+each msg transfer has wait 1sec. because, slack api has restriction of 1msg/sec. https://api.slack.com/docs/rate-limits
+
+slack webhook information. - https://api.slack.com/incoming-webhooks
+
+OPTIONS:
+   --mqtt-server value       mqtt server (e.g. scheme://host:port where scheme is tcp, ssl or ws) (default: "tcp://127.0.0.1:1883") [$MQTT_SERVER]
+   --mqtt-subtopic value     mqtt topic name [$MQTT_SUBTOPIC]
+   --mqtt-username value     mqtt server username (optional) [$MQTT_USERNAME]
+   --mqtt-password value     mqtt server password (optional) [$MQTT_PASSWORD]
+   --mqtt-ca-cert value      mqtt CA certificate file (optional) [$MQTT_CA_CERT]
+   --mqtt-buf-cnt value      mqtt msg buffer count (optional) buf required reason is limitation of slackwebhook 1msg/sec (default: 1000) [$MQTT_BUF_CNT]
+   --slack-webhookurl value  slack webhook url. (optional) see details https://api.slack.com/incoming-webhooks [$SLACK_WEBHOOK]
+   --slack-ch value          Slack Channel name (optional) [$SLACK_CH]
+   --slack-username value    Slack username (optional) (default: "fromMQTT") [$SLACK_USERNAME]
+   --slack-iconemoji value   Slack iconemoji (e.g. :ghost:, :abcd:) (optional) (default: ":abcd:") [$SLACK_USERNAME]
+   --log-level value         debug=5, info=4, warning=3, error=2, fatal=1, panic=0 (default: 4) [$LOG_LEVEL]
+   --help, -h                show help
+   --version, -v             print the version
+
+ [sample]
+ex) MQTTS to slack
+./mqtt-to-slack_linux --mqtt-server ssl://<mqttserver>:8883 --mqtt-subtopic <topic> --mqtt-username <username> --mqtt-password <password> --mqtt-ca-cert <CAcertFile> --slack-webhookurl <slackWebhookURL> --slack-ch <ch_name> --log-level 2 
+ex) to slack
+./mqtt-to-slack_linux --mqtt-server tcp://<mqttserver>:1883 --mqtt-username <username> --mqtt-password <password> --mqtt-subtopic <topic> --slack-webhookurl <url> --slack-ch <channel>
+ex) no slack
+./mqtt-to-slack_linux --mqtt-server tcp://<mqttserver>:1883 --mqtt-username <username> --mqtt-password <password> --mqtt-subtopic <topic>
+

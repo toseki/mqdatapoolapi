@@ -1,0 +1,61 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "/Dq5ro6kG7eLYXNlgdmQ5uVfooc=",
+			"path": "github.com/codegangsta/cli",
+			"revision": "7ace96b43d4bdc46f81d0d1219742b2469874cf6",
+			"revisionTime": "2017-11-16T04:56:12Z"
+		},
+		{
+			"checksumSHA1": "AIsVfhR52idiQmTRBJCBW45KVNA=",
+			"path": "github.com/eclipse/paho.mqtt.golang",
+			"revision": "512dcaa501c1580ea8eccb062ba06cc0c2b78172",
+			"revisionTime": "2017-11-16T13:58:54Z"
+		},
+		{
+			"checksumSHA1": "ITCnG3uKUnqNXrnnulKokjQKfN4=",
+			"path": "github.com/eclipse/paho.mqtt.golang/packets",
+			"revision": "512dcaa501c1580ea8eccb062ba06cc0c2b78172",
+			"revisionTime": "2017-11-16T13:58:54Z"
+		},
+		{
+			"checksumSHA1": "pOsyzLxA9jL375TDmbDdsgiMPl8=",
+			"path": "github.com/sirupsen/logrus",
+			"revision": "95cd2b9c79aa5e72ab0bc69b7ccc2be15bf850f6",
+			"revisionTime": "2017-11-18T12:42:23Z"
+		},
+		{
+			"checksumSHA1": "4vi1yAnCfc+roJdMn/VZeHxlHj0=",
+			"path": "golang.org/x/crypto/ssh/terminal",
+			"revision": "b080dc9a8c480b08e698fb1219160d598526310f",
+			"revisionTime": "2017-11-22T09:46:40Z"
+		},
+		{
+			"checksumSHA1": "r9l4r3H6FOLQ0c2JaoXpopFjpnw=",
+			"path": "golang.org/x/net/proxy",
+			"revision": "c7086645de248775cbf2373cf5ca4d2fa664b8c1",
+			"revisionTime": "2017-11-10T09:49:23Z"
+		},
+		{
+			"checksumSHA1": "7EZyXN0EmZLgGxZxK01IJua4c8o=",
+			"path": "golang.org/x/net/websocket",
+			"revision": "c7086645de248775cbf2373cf5ca4d2fa664b8c1",
+			"revisionTime": "2017-11-10T09:49:23Z"
+		},
+		{
+			"checksumSHA1": "HXB0d4aXM+NMa/ERLgPzbM6+qig=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "a13efeb2fd213cf4be7227992aa54519af3b2ac0",
+			"revisionTime": "2017-11-23T10:22:21Z"
+		},
+		{
+			"checksumSHA1": "cQoW6a5F9mbu10APPXM39YJtv48=",
+			"path": "golang.org/x/sys/windows",
+			"revision": "a13efeb2fd213cf4be7227992aa54519af3b2ac0",
+			"revisionTime": "2017-11-23T10:22:21Z"
+		}
+	],
+	"rootPath": "github.com/ngc-p/mqtttoslack"
+}
