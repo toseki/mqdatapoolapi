@@ -3,7 +3,6 @@ package sub
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"fmt"
 	"io/ioutil"
 	"sync"
 	"time"
@@ -12,7 +11,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// Backend implements a MQTT pub-sub backend.
+// MqttBackend Backend implements a MQTT sub backend.
 type MqttBackend struct {
 	conn           mqtt.Client
 	subPayloadChan chan map[string][]byte
@@ -108,7 +107,7 @@ func (b *MqttBackend) subPacketHandler(c mqtt.Client, msg mqtt.Message) {
 	//defer b.submutex.Unlock()
 
 	log.WithField("topic", msg.Topic()).Info("mqtt: received message")
-	fmt.Println(string(msg.Payload()))
+	//fmt.Println(string(msg.Payload()))
 
 	// check queue high usage.
 	if len(b.subPayloadChan) > cap(b.subPayloadChan)-10 {

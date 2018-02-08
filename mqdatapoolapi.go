@@ -12,6 +12,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	log "github.com/sirupsen/logrus"
+	"github.com/toseki/mqttdatapoolapi/auth"
 	"github.com/toseki/mqttdatapoolapi/httphandler"
 	"github.com/toseki/mqttdatapoolapi/storage"
 	"github.com/toseki/mqttdatapoolapi/sub"
@@ -37,17 +38,10 @@ func run(c *cli.Context) error {
 
 	// param check
 	subtopic := c.String("mqtt-subtopic")
-	if subtopic == "" {
-		log.Errorf("missing --mqtt-subtopic parameter")
-		fmt.Println("ex) to slack")
-		fmt.Printf("%s --mqtt-server tcp://<mqttserver>:1883 --mqtt-username <username> --mqtt-password <password> --mqtt-subtopic <topic> --slack-webhookurl <url> --slack-ch <channel>\n", os.Args[0])
-		fmt.Println("ex) no slack")
-		fmt.Printf("%s --mqtt-server tcp://<mqttserver>:1883 --mqtt-username <username> --mqtt-password <password> --mqtt-subtopic <topic>\n", os.Args[0])
-		os.Exit(0)
-	}
-
-	if c.String("kvs-path") == "" {
-		log.Errorf("missing kvs-path parameter")
+	if subtopic == "" || c.String("kvs-path") == "" || c.String("mysql-dsn") == "" || c.String("user-table") == "" {
+		log.Errorf("missing some parameter")
+		fmt.Println("ex) ")
+		fmt.Printf("%s --mqtt-server tcp://<mqttserver>:1883 --mqtt-username <username> --mqtt-password <password> --mqtt-subtopic <topic> --kvs-path <path> --api-port 8080 --mysql-dsn \"user:password@tcp(host:port)/dbname\" --user-table usertable\n", os.Args[0])
 		os.Exit(0)
 	}
 
@@ -73,6 +67,7 @@ func run(c *cli.Context) error {
 	// mqttmsg -> leveldb
 	kvsh := storage.NewMsgKvsHandler(c.String("kvs-path"))
 	defer kvsh.CloseKVSHandler()
+
 	go func() {
 		cnt := 1
 		for batch := range mqttHandler.SubPayloadChan() {
@@ -92,10 +87,17 @@ func run(c *cli.Context) error {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	sqlh := storage.NewSQLHandler(c.String("mysql-dsn"), c.String("user-table"))
+	defer sqlh.CloseSQLHandler()
+
+	e.Use(auth.BasicAuth(sqlh))
+
 	httph := httphandler.NewhttpHandler(kvsh)
 	e.GET("/:base/:userparam/:param1/:param2", httph.GetData)
 
-	e.Start(":" + c.String("api-port"))
+	go func() {
+		e.Start(":" + c.String("api-port"))
+	}()
 
 	sigChan := make(chan os.Signal)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
@@ -150,6 +152,16 @@ func main() {
 			Name:   "kvs-path",
 			Usage:  "leveldb data path.",
 			EnvVar: "KVS_PATH",
+		},
+		cli.StringFlag{
+			Name:   "mysql-dsn",
+			Usage:  "mysql connection param. ex) \"user:password@tcp(host:port)/dbname\"",
+			EnvVar: "MYSQL_DSN",
+		},
+		cli.StringFlag{
+			Name:   "user-table",
+			Usage:  "mysqldb user table name ex) usertable",
+			EnvVar: "USER_TABLE",
 		},
 		cli.StringFlag{
 			Name:   "api-port",
