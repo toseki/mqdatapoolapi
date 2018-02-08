@@ -9,7 +9,10 @@ import (
 	"time"
 
 	"github.com/codegangsta/cli"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	log "github.com/sirupsen/logrus"
+	"github.com/toseki/mqttdatapoolapi/httphandler"
 	"github.com/toseki/mqttdatapoolapi/storage"
 	"github.com/toseki/mqttdatapoolapi/sub"
 )
@@ -83,6 +86,17 @@ func run(c *cli.Context) error {
 		}
 	}()
 
+	// echo Server
+	e := echo.New()
+
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	httph := httphandler.NewhttpHandler(kvsh)
+	e.GET("/:base/:userparam/:param1/:param2", httph.GetData)
+
+	e.Start(":" + c.String("api-port"))
+
 	sigChan := make(chan os.Signal)
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
 	log.WithField("signal", <-sigChan).Info("signal received")
@@ -137,10 +151,10 @@ func main() {
 			Usage:  "leveldb data path.",
 			EnvVar: "KVS_PATH",
 		},
-		cli.IntFlag{
+		cli.StringFlag{
 			Name:   "api-port",
 			Usage:  "API Server Port",
-			Value:  8080,
+			Value:  "8080",
 			EnvVar: "API_PORT",
 		},
 		cli.IntFlag{

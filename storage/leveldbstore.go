@@ -8,6 +8,7 @@ import (
 type Handler interface {
 	CloseKVSHandler()
 	PutKVS(batch map[string][]byte) error
+	GetPayloadData(topic string) ([]byte, error)
 }
 
 type KVSHandler struct {
@@ -41,4 +42,13 @@ func (h *KVSHandler) PutKVS(batch map[string][]byte) error {
 		}
 	}
 	return nil
+}
+
+func (h *KVSHandler) GetPayloadData(topic string) ([]byte, error) {
+	data, err := h.kvs.Get([]byte(topic), nil)
+	if err != nil {
+		log.Error("storage/leveldb: get error:", err)
+		return nil, err
+	}
+	return data, nil
 }
