@@ -5,7 +5,13 @@ Subscribe MQTT topic  and keeping only newest each topic payload to kvs(leveldb)
 and Provide RestAPI for access the each topic payload with user authentication.
     MQTT -> LevelDB -> RestAPI
 
-each msg transfer has wait 1se
+expected MQTT topic format is <base>/<username>/<param>/<param>.
+
+expected mysql user-table contained column was below.
+    username
+    salt
+    password  -  sha256hash hexdigest value (salt + user's original password)
+
 
 GLOBAL OPTIONS:
    --mqtt-server value    mqtt server (e.g. scheme://host:port where scheme is tcp, ssl or ws) (default: "tcp://127.0.0.1:1883") [$MQTT_SERVER]
@@ -13,7 +19,7 @@ GLOBAL OPTIONS:
    --mqtt-username value  mqtt server username (optional) [$MQTT_USERNAME]
    --mqtt-password value  mqtt server password (optional) [$MQTT_PASSWORD]
    --mqtt-ca-cert value   mqtt CA certificate file (optional) [$MQTT_CA_CERT]
-   --mqtt-buf-cnt value   mqtt msg buffer count (optional) buf required reason is limitation of slackwebhook 1msg/sec (default: 100) [$MQTT_BUF_CNT]
+   --mqtt-buf-cnt value   mqtt msg buffer count (optional) (default: 100) [$MQTT_BUF_CNT]
    --kvs-path value       leveldb data path. [$KVS_PATH]
    --mysql-dsn value      mysql connection param. ex) "user:password@tcp(host:port)/dbname" [$MYSQL_DSN]
    --user-table value     mysqldb user table name ex) usertable [$USER_TABLE]

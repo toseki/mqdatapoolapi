@@ -144,7 +144,7 @@ func main() {
 		},
 		cli.IntFlag{
 			Name:   "mqtt-buf-cnt",
-			Usage:  "mqtt msg buffer count (optional) buf required reason is limitation of slackwebhook 1msg/sec",
+			Usage:  "mqtt msg buffer count (optional)",
 			Value:  100,
 			EnvVar: "MQTT_BUF_CNT",
 		},
