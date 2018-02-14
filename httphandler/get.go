@@ -39,6 +39,6 @@ func (h *httpHandler) GetData(c echo.Context) error {
 	if err != nil {
 		payload = []byte("no data")
 	}
-	log.Debug("kvs payload:", payload)
+	log.Debugf("kvs payload: %s", payload)
 	return c.String(http.StatusOK, fmt.Sprintf("%s", payload))
 }

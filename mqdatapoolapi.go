@@ -74,7 +74,7 @@ func run(c *cli.Context) error {
 			if err := kvsh.PutKVS(batch); err != nil {
 				log.Warningf("PutKVS error:", err)
 			}
-			log.WithField("payload", fmt.Sprint(batch)).Debug("putKVS was done")
+			log.WithField("payload", fmt.Sprintf("%s", batch)).Debug("putKVS was done")
 
 			cnt++
 
