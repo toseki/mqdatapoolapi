@@ -12,16 +12,16 @@ import (
 
 // BasicAuth username password check
 func BasicAuth(sqlh storage.MysqlHandler) echo.MiddlewareFunc {
-	return middleware.BasicAuth(func(username, password string) bool {
+	return middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
 		var u storage.UserInfo
 		u, err := sqlh.UserAuth(username)
 		if err != nil {
 			log.Error("auth/BasicAuth: sql UserAuth error:", err)
-			return false
+			return false, nil
 		}
 
 		authchkhex := fmt.Sprintf("%x", sha256.Sum256([]byte(u.Salt+password)))
 
-		return username == u.Username && u.Password == authchkhex
+		return username == u.Username && u.Password == authchkhex, nil
 	})
 }
