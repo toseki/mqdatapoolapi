@@ -10,7 +10,7 @@ expected MQTT topic format is <base>/<username>/<param>/<param>.
 expected mysql user-table contained column was below.
     username
     salt
-    password  -  sha256hash hexdigest value (salt + user's original password)
+    password  -  sha256hash hexdigest value
 
 
 GLOBAL OPTIONS:
